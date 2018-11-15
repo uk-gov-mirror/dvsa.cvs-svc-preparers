@@ -2,7 +2,7 @@
 const supertest = require('supertest')
 const expect = require('expect')
 
-const url = 'http://localhost:3000/atf'
+const url = 'http://localhost:3000/preparers'
 const request = supertest(url)
 
 describe('preparers', () => {
