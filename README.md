@@ -3,7 +3,7 @@
 **In order to run cvs-svc-preparers-mock locally:**
 
   - `npm install (install dependencies)`
-  - `npm run start (start project locally with serverless)`
+  - `npm run start (start project locally with serverless offline)`
 
 **Git Hooks**
 
