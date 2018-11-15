@@ -1,0 +1,58 @@
+service: 
+  name: cvs-preparers-mock
+
+openapi: 3.0.0
+
+plugins:
+  - serverless-offline
+  - serverless-openapi-documentation
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+custom:
+  documentation:
+    version: '1'
+    title: 'Get Preparers List API'
+    description: 'This is the API spec for the preparers microservice. Currently this service only retrieves all the preparers.'
+    models: 
+      - name: "preparers"
+        description: "Get preparers successful response"
+        contentType: "application/json"
+        schema: 
+          type: "array"
+          items: 
+            type: "object"
+            properties: 
+              preparerId:
+                type: "number"
+              preparerName":
+                type: "string"
+
+functions:
+  getPreparers:
+    handler: handler.getPreparers
+    events:
+      - http:
+          path: "preparers"
+          method: "get"
+          documentation:
+            summary: "Get preparers List"
+            description: "Returns all existing preparers from the database"
+            methodResponses:
+              - statusCode: 200
+                responseBody:
+                  description: "List of preparers"
+                responseModels: 
+                  "application/json": "preparers"
+              - statusCode: 500
+                responseBody:
+                  description: "The error trace"
+                responseModels:
+                  content:
+                    application/json:
+                      schema:
+                        type: array
+                        items:
+                          type: string
