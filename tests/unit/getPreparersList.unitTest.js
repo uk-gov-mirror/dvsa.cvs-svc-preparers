@@ -1,6 +1,6 @@
 /* global describe it */
 const expect = require('expect')
-const getPreparersList = require('../../services/getPreparersListService')
+const getPreparersList = require('../../src/services/getPreparersListService')
 
 describe('getPreparersList', () => {
   it('should return a populated list of preparers', () => {

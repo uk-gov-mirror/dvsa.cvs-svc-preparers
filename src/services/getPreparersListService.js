@@ -4,7 +4,7 @@ const HttpResponseStatus = require('../models/HTTPResponseStatus')
 
 const getPreparersList = () => {
   return new Promise((resolve, reject) => {
-    const result = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../mocks/mock-preparers.json'), 'utf8'))
+    const result = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../tests/resources/mock-preparers.json'), 'utf8'))
     if (result.length === 0) {
       reject(new HttpResponseStatus(404, 'Preparers not found'))
     } else {
