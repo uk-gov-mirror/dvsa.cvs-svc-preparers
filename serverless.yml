@@ -12,6 +12,8 @@ provider:
   runtime: nodejs8.10
 
 custom:
+  serverless-offline:
+    port: 3003
   documentation:
     version: '1'
     title: 'Get Preparers List API'
@@ -32,7 +34,7 @@ custom:
 
 functions:
   getPreparers:
-    handler: handler.getPreparers
+    handler: src/handler.getPreparers
     events:
       - http:
           path: "preparers"
