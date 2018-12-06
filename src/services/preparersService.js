@@ -17,7 +17,8 @@ class PreparersService {
         if (data.Count === 0) { throw new HTTPResponseStatus(404, 'No resources match the search criteria.') }
         return data.Items
       })
-      .catch(error => {
+      .catch((error) => {
+        console.log(error)
         if (!error.statusCode) {
           error.statusCode = 500
           error.body = 'Internal Server Error'

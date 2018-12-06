@@ -20,6 +20,7 @@ const getPreparers = () => {
       }
     })
     .catch((error) => {
+      console.log(error)
       return {
         statusCode: error.statusCode,
         headers: error.headers,
