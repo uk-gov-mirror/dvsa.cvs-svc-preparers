@@ -34,7 +34,7 @@ custom:
 
 functions:
   getPreparers:
-    handler: src/handler.getPreparers
+    handler: src/handler.handler
     events:
       - http:
           path: "preparers"

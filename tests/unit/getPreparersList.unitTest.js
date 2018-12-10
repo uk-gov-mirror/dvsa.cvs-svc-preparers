@@ -12,7 +12,7 @@ describe('getPreparersList', () => {
   describe('when database is on', () => {
     context('database call returns valid data', () => {
       it('should return the expected data', () => {
-        preparersDAOMock.preparersRecordsMock = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../tests/resources/mock-preparers.json')))
+        preparersDAOMock.preparersRecordsMock = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../resources/mock-preparers.json')))
         preparersDAOMock.numberOfRecords = 29
         preparersDAOMock.numberOfScannedRecords = 29
         const preparersService = new PreparersService(preparersDAOMock)
@@ -25,7 +25,7 @@ describe('getPreparersList', () => {
     })
     context('database call returns empty data', () => {
       it('should return error 404', () => {
-        preparersDAOMock.preparersRecordsMock = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../tests/resources/mock-preparers.json')))
+        preparersDAOMock.preparersRecordsMock = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../resources/mock-preparers.json')))
         preparersDAOMock.numberOfRecords = 0
         preparersDAOMock.numberOfScannedRecords = 0
         const preparersService = new PreparersService(preparersDAOMock)
@@ -44,7 +44,7 @@ describe('getPreparersList', () => {
 
   describe('when database is off', () => {
     it('should return error 500', () => {
-      preparersDAOMock.preparersRecordsMock = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../tests/resources/mock-preparers.json')))
+      preparersDAOMock.preparersRecordsMock = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../resources/mock-preparers.json')))
       preparersDAOMock.numberOfRecords = 29
       preparersDAOMock.numberOfScannedRecords = 29
       preparersDAOMock.isDatabaseOn = false

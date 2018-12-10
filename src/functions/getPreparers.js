@@ -7,9 +7,9 @@ const path = require('path')
 
 const getPreparers = () => {
   const preparersDAOMock = new PreparersDAOMock()
-  preparersDAOMock.preparersRecordsMock = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../tests/resources/mock-preparers.json')))
-  preparersDAOMock.numberOfRecords = 29
-  preparersDAOMock.numberOfScannedRecords = 29
+  preparersDAOMock.preparersRecordsMock = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../resources/mock-preparers.json')))
+  preparersDAOMock.numberOfRecords = preparersDAOMock.preparersRecordsMock.length
+  preparersDAOMock.numberOfScannedRecords = preparersDAOMock.preparersRecordsMock.length
   const preparersService = new PreparersService(preparersDAOMock)
 
   return preparersService.getPreparersList()
@@ -20,6 +20,7 @@ const getPreparers = () => {
       }
     })
     .catch((error) => {
+      console.log(error)
       return {
         statusCode: error.statusCode,
         headers: error.headers,
