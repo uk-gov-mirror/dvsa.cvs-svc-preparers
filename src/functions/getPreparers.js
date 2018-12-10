@@ -3,6 +3,7 @@
 const fs = require('fs')
 const PreparersDAOMock = require('../models/PreparersDAOMock')
 const PreparersService = require('../services/PreparersService')
+const HTTPResponse = require('../models/HTTPResponse')
 const path = require('path')
 
 const getPreparers = () => {
@@ -13,20 +14,13 @@ const getPreparers = () => {
   const preparersService = new PreparersService(preparersDAOMock)
 
   return preparersService.getPreparersList()
-    .then((response) => {
-      return {
-        statusCode: response.statusCode,
-        headers: response.headers,
-        body: JSON.stringify(response.body)
-      }
+    .then((data) => {
+      return new HTTPResponse(200, JSON.stringify(data))
     })
     .catch((error) => {
       console.log(error)
-      return {
-        statusCode: error.statusCode,
-        headers: error.headers,
-        body: JSON.stringify(error.body)
-      }
+
+      return new HTTPResponse(error.statusCode, JSON.stringify(error.body))
     })
 }
 
