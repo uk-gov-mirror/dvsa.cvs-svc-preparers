@@ -13,10 +13,11 @@ const getPreparers = () => {
   const preparersService = new PreparersService(preparersDAOMock)
 
   return preparersService.getPreparersList()
-    .then((data) => {
+    .then((response) => {
       return {
-        statusCode: 200,
-        body: JSON.stringify(data)
+        statusCode: response.statusCode,
+        headers: response.headers,
+        body: JSON.stringify(response.body)
       }
     })
     .catch((error) => {

@@ -1,7 +1,7 @@
 /* global describe it context */
 const PreparersDAOMock = require('../../src/models/PreparersDAOMock')
 const PreparersService = require('../../src/services/PreparersService')
-const HTTPResponseStatus = require('../../src/models/HTTPResponseStatus')
+const HTTPErrorResponse = require('../../src/models/HTTPErrorResponse')
 const fs = require('fs')
 const path = require('path')
 const expect = require('chai').expect
@@ -34,7 +34,7 @@ describe('getPreparersList', () => {
           .then(() => {
             expect.fail()
           }).catch((errorResponse) => {
-            expect(errorResponse).to.be.instanceOf(HTTPResponseStatus)
+            expect(errorResponse).to.be.instanceOf(HTTPErrorResponse)
             expect(errorResponse.statusCode).to.equal(404)
             expect(errorResponse.body).to.equal('No resources match the search criteria.')
           })
@@ -53,7 +53,7 @@ describe('getPreparersList', () => {
       return preparersService.getPreparersList()
         .then(() => {})
         .catch((errorResponse) => {
-          expect(errorResponse).to.be.instanceOf(HTTPResponseStatus)
+          expect(errorResponse).to.be.instanceOf(HTTPErrorResponse)
           expect(errorResponse.statusCode).to.be.equal(500)
           expect(errorResponse.body).to.equal('Internal Server Error')
         })

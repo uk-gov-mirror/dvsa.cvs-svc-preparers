@@ -1,6 +1,7 @@
 
 'use strict'
-const HTTPResponseStatus = require('../models/HTTPResponseStatus')
+const HTTPErrorResponse = require('../models/HTTPErrorResponse')
+const HTTPStatusResponse = require('../models/HTTPStatusResponse')
 
 /**
  * Fetches the entire list of preparers from the database.
@@ -14,8 +15,11 @@ class PreparersService {
   getPreparersList () {
     return this.preparersDAO.getAll()
       .then(data => {
-        if (data.Count === 0) { throw new HTTPResponseStatus(404, 'No resources match the search criteria.') }
-        return data.Items
+        if (data.Count === 0) {
+          throw new HTTPErrorResponse(404, 'No resources match the search criteria.')
+        }
+
+        return new HTTPStatusResponse(200, data.Items)
       })
       .catch((error) => {
         console.log(error)
@@ -24,7 +28,7 @@ class PreparersService {
           error.body = 'Internal Server Error'
         }
 
-        throw new HTTPResponseStatus(error.statusCode, error.body)
+        throw new HTTPErrorResponse(error.statusCode, error.body)
       })
   }
 }
