@@ -21,8 +21,8 @@ class PreparersService {
         return data.Items
       })
       .catch((error) => {
-        console.log(error)
-        if (!error.statusCode) {
+        if (!(error instanceof HTTPError)) {
+          console.log(error)
           error.statusCode = 500
           error.body = 'Internal Server Error'
         }
