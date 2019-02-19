@@ -40,7 +40,7 @@ podTemplate(label: label, containers: [
                 --attribute-definitions \
                     AttributeName=preparerId,AttributeType=S \
                 --key-schema AttributeName=preparerId,KeyType=HASH \
-                --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --region=eu-west-1 --endpoint-url http://localhost:8006
+                --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --region=eu-west-1 --endpoint-url http://localhost:8005
                 '''
 
                 sh "sls dynamodb seed --seed=preparers"
