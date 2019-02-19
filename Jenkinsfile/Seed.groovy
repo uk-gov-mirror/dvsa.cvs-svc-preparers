@@ -34,16 +34,15 @@ podTemplate(label: label, containers: [
                 }
                 
                 stage ("create-table") {
-                    sh '''
-                aws dynamodb create-table \
-                --table-name cvs-local-preparers \
-                --attribute-definitions \
-                    AttributeName=preparerId,AttributeType=S \
-                --key-schema AttributeName=preparerId,KeyType=HASH \
-                --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --region=eu-west-1
-                '''
-
-                sh "sls dynamodb seed --seed=preparers"
+                    sh """
+                        aws dynamodb create-table \
+                        --table-name cvs-${LBRANCH}-preparers \
+                        --attribute-definitions \
+                            AttributeName=preparerId,AttributeType=S \
+                        --key-schema AttributeName=preparerId,KeyType=HASH \
+                        --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --region=eu-west-1
+                """
+                        sh "aws dynamodb wait table-exists --table-name cvs-${LBRANCH}-defects --region=eu-west-1"
 
                 }
                 
