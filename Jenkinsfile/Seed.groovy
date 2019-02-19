@@ -41,8 +41,14 @@ podTemplate(label: label, containers: [
                             AttributeName=preparerId,AttributeType=S \
                         --key-schema AttributeName=preparerId,KeyType=HASH \
                         --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --region=eu-west-1
-                """
-                        sh "aws dynamodb wait table-exists --table-name cvs-${LBRANCH}-defects --region=eu-west-1"
+                        """
+                        sh "sleep 10"
+                    sh """aws dynamodb tag-resource \
+                        --resource-arn arn:aws:dynamodb:eu-west-1:006106226016:table/cvs-${LBRANCH}-preparers \
+                        --tags Key=is_managed,Value=true \
+                        --region=eu-west-1
+                        """
+                        sh "aws dynamodb wait table-exists --table-name cvs-${LBRANCH}-preparers --region=eu-west-1"
 
                 }
                 
