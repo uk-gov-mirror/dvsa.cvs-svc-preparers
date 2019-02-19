@@ -42,7 +42,7 @@ podTemplate(label: label, containers: [
                         --key-schema AttributeName=preparerId,KeyType=HASH \
                         --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --region=eu-west-1
                         """
-                        sh "sleep 10"
+                    sh "sleep 10"
                     sh """aws dynamodb tag-resource \
                         --resource-arn arn:aws:dynamodb:eu-west-1:006106226016:table/cvs-${LBRANCH}-preparers \
                         --tags Key=is_managed,Value=true \
