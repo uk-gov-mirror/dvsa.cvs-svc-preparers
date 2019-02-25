@@ -1,3 +1,5 @@
+/* global describe context it before beforeEach after afterEach */
+
 const supertest = require('supertest')
 const expect = require('chai').expect
 const fs = require('fs')
@@ -32,7 +34,7 @@ describe('preparers', () => {
       })
 
       it('should return all preparers in the database', (done) => {
-        let expectedResponse = JSON.parse(JSON.stringify(preparersData));
+        let expectedResponse = JSON.parse(JSON.stringify(preparersData))
 
         request.get('preparers')
           .end((err, res) => {
