@@ -26,9 +26,9 @@ custom:
     start:
       port: 8006
       inMemory: true
-      migrate: false
+      migrate: true
       seed: true
-      noStart: true
+      noStart: false
     seed:
       preparers:
         sources:
