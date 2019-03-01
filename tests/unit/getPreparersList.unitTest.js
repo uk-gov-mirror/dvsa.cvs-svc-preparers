@@ -1,4 +1,5 @@
-/* global describe it context */
+/* global describe context it */
+
 const PreparersDAOMock = require('../models/PreparersDAOMock')
 const PreparersService = require('../../src/services/PreparersService')
 const HTTPError = require('../../src/models/HTTPError')
