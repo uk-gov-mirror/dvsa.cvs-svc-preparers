@@ -6,6 +6,7 @@ openapi: 3.0.0
 plugins:
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-plugin-tracing
 
 provider:
   name: aws
