@@ -8,7 +8,8 @@ gulp.task('start-serverless', function (done) {
   instance.stdout.on('data', function (output) {
     process.stdout.write(output)
 
-    if (output.search('Offline [HTTP] listening') !== -1) {
+    // Used to be "Offline [HTTP] listening" but serverless obscure that line now with instructions for replay
+    if (output.search('replay the last request') !== -1) {
       done()
       process.exit(0)
     }
