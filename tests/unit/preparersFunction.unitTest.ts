@@ -1,6 +1,5 @@
 import GetPreparersFunction from "../../src/functions/getPreparers";
 import PreparersService from "../../src/services/PreparersService";
-import {expect} from "chai";
 import HTTPError from "../../src/models/HTTPError";
 
 jest.mock("../../src/services/PreparersService");
@@ -14,8 +13,8 @@ describe("getPreparers function", () => {
       });
 
       const res = await GetPreparersFunction();
-      expect(res.body).to.equal(JSON.stringify(retData));
-      expect(res.statusCode).to.equal(200);
+      expect(res.body).toEqual(JSON.stringify(retData));
+      expect(res.statusCode).toEqual(200);
     });
   });
 
@@ -27,8 +26,8 @@ describe("getPreparers function", () => {
       });
 
       const res = await GetPreparersFunction();
-      expect(res.body).to.equal(JSON.stringify("It broke"));
-      expect(res.statusCode).to.equal(418);
+      expect(res.body).toEqual(JSON.stringify("It broke"));
+      expect(res.statusCode).toEqual(418);
     });
   });
 

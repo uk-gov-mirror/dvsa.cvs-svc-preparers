@@ -1,11 +1,9 @@
 /* global describe context it */
 import PreparersService from "../../src/services/PreparersService";
 import HTTPError from "../../src/models/HTTPError";
-import {expect} from "chai";
 import preparers from "../resources/preparers.json";
 
 describe("getPreparersList", () => {
-  // var preparersDAOMock = new PreparersDAOMock()
 
   describe("when database is on", () => {
     context("database call returns valid data", () => {
@@ -21,12 +19,12 @@ describe("getPreparersList", () => {
 
         return preparersService.getPreparersList()
           .then((returnedRecords) => {
-            expect(returnedRecords).to.have.length(29);
+            expect(returnedRecords).toHaveLength(29);
           });
       });
     });
     context("database call returns empty data", () => {
-      it("should return error 404", () => {
+      it("should return error 404", async () => {
 
         const MockPreparersDAO = jest.fn().mockImplementation(() => {
           return {
@@ -37,20 +35,19 @@ describe("getPreparersList", () => {
         });
         const preparersService = new PreparersService(new MockPreparersDAO());
 
-        return preparersService.getPreparersList()
-          .then(() => {
-            expect.fail();
-          }).catch((errorResponse) => {
-            expect(errorResponse).to.be.instanceOf(HTTPError);
-            expect(errorResponse.statusCode).to.equal(404);
-            expect(errorResponse.body).to.equal("No resources match the search criteria.");
-          });
+        try {
+          expect(await preparersService.getPreparersList()).toThrowError();
+        } catch (errorResponse) {
+          expect(errorResponse).toBeInstanceOf(HTTPError);
+          expect(errorResponse.statusCode).toEqual(404);
+          expect(errorResponse.body).toEqual("No resources match the search criteria.");
+        }
       });
     });
   });
 
   describe("when database is off", () => {
-    it("should return error 500", () => {
+    it("should return error 500", async () => {
       const MockPreparersDAO = jest.fn().mockImplementation(() => {
         return {
           getAll: () => {
@@ -60,13 +57,13 @@ describe("getPreparersList", () => {
       });
       const preparersService = new PreparersService(new MockPreparersDAO());
 
-      return preparersService.getPreparersList()
-        .then(() => { expect.fail(); })
-        .catch((errorResponse) => {
-          expect(errorResponse).to.be.instanceOf(HTTPError);
-          expect(errorResponse.statusCode).to.be.equal(500);
-          expect(errorResponse.body).to.equal("Internal Server Error");
-        });
+      try {
+        expect(await preparersService.getPreparersList()).toThrowError();
+      } catch (errorResponse) {
+        expect(errorResponse).toBeInstanceOf(HTTPError);
+        expect(errorResponse.statusCode).toEqual(500);
+        expect(errorResponse.body).toEqual("Internal Server Error");
+      }
     });
   });
 
@@ -77,7 +74,7 @@ describe("getPreparersList", () => {
 
 describe("insertPreparerList", () => {
   context("when db does not return response", () => {
-    it("should throw 500-Internal Server Error", () => {
+    it("should throw 500-Internal Server Error", async () => {
       const mockData = [preparers[0]];
       const MockPreparersDAO = jest.fn().mockImplementation(() => {
         return {
@@ -88,17 +85,18 @@ describe("insertPreparerList", () => {
       });
       const preparersService = new PreparersService(new MockPreparersDAO());
 
-      return preparersService.insertPreparerList(mockData)
-        .catch((errorResponse) => {
-          expect(errorResponse).to.be.instanceOf(HTTPError);
-          expect(errorResponse.statusCode).to.be.equal(500);
-          expect(errorResponse.body).to.equal("Internal Server Error");
-        });
+      try {
+        expect(await preparersService.insertPreparerList(mockData)).toThrowError();
+      } catch (errorResponse) {
+        expect(errorResponse).toBeInstanceOf(HTTPError);
+        expect(errorResponse.statusCode).toEqual(500);
+        expect(errorResponse.body).toEqual("Internal Server Error");
+      }
     });
   });
 
   context("when db does not return response OR an error", () => {
-    it("should still throw 500-Internal Server Error", () => {
+    it("should still throw 500-Internal Server Error", async () => {
       const mockData = [preparers[0]];
       const MockPreparersDAO = jest.fn().mockImplementation(() => {
         return {
@@ -109,12 +107,13 @@ describe("insertPreparerList", () => {
       });
       const preparersService = new PreparersService(new MockPreparersDAO());
 
-      return preparersService.insertPreparerList(mockData)
-          .catch((errorResponse) => {
-            expect(errorResponse).to.be.instanceOf(HTTPError);
-            expect(errorResponse.statusCode).to.be.equal(500);
-            expect(errorResponse.body).to.equal("Internal Server Error");
-          });
+      try {
+        expect(await preparersService.insertPreparerList(mockData)).toThrowError();
+      } catch (errorResponse) {
+        expect(errorResponse).toBeInstanceOf(HTTPError);
+        expect(errorResponse.statusCode).toEqual(500);
+        expect(errorResponse.body).toEqual("Internal Server Error");
+      }
     });
   });
 
@@ -132,8 +131,8 @@ describe("insertPreparerList", () => {
 
       return preparersService.insertPreparerList(mockData)
         .then((result: any) => {
-          expect(Object.keys(result).length).to.equal(0);
-          expect(result.constructor).to.equal(Object);
+          expect(Object.keys(result).length).toEqual(0);
+          expect(result.constructor).toEqual(Object);
         });
     });
   });
@@ -152,7 +151,7 @@ describe("insertPreparerList", () => {
 
       return preparersService.insertPreparerList(mockData)
           .then((result: any) => {
-            expect(result.length).to.equal(1);
+            expect(result.length).toEqual(1);
           });
     });
   });
@@ -171,10 +170,7 @@ describe("insertPreparerList", () => {
 
       return preparersService.insertPreparerList(mockData)
           .then((result: any) => {
-            expect(result).to.be.undefined;
-          })
-          .catch(() => {
-            expect.fail();
+            expect(result).toBeUndefined();
           });
     });
   });
@@ -199,9 +195,9 @@ describe("deletePreparerList", () => {
 
       return preparersService.deletePreparerList(mockData)
         .catch((errorResponse) => {
-          expect(errorResponse).to.be.instanceOf(HTTPError);
-          expect(errorResponse.statusCode).to.be.equal(500);
-          expect(errorResponse.body).to.equal("Internal Server Error");
+          expect(errorResponse).toBeInstanceOf(HTTPError);
+          expect(errorResponse.statusCode).toEqual(500);
+          expect(errorResponse.body).toEqual("Internal Server Error");
         });
     });
   });
@@ -220,9 +216,9 @@ describe("deletePreparerList", () => {
 
       return preparersService.deletePreparerList(mockData)
           .catch((errorResponse) => {
-            expect(errorResponse).to.be.instanceOf(HTTPError);
-            expect(errorResponse.statusCode).to.be.equal(500);
-            expect(errorResponse.body).to.equal("Internal Server Error");
+            expect(errorResponse).toBeInstanceOf(HTTPError);
+            expect(errorResponse.statusCode).toEqual(500);
+            expect(errorResponse.body).toEqual("Internal Server Error");
           });
     });
   });
@@ -241,8 +237,8 @@ describe("deletePreparerList", () => {
 
       return preparersService.deletePreparerList(mockData)
         .then((result: any) => {
-          expect(Object.keys(result).length).to.equal(0);
-          expect(result.constructor).to.equal(Object);
+          expect(Object.keys(result).length).toEqual(0);
+          expect(result.constructor).toEqual(Object);
         });
     });
   });
@@ -261,10 +257,7 @@ describe("deletePreparerList", () => {
 
       return preparersService.deletePreparerList(mockData)
           .then((result: any) => {
-            expect(result).to.be.undefined;
-          })
-          .catch(() => {
-            expect.fail();
+            expect(result).toBeUndefined();
           });
     });
   });
