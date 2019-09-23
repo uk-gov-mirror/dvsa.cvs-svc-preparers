@@ -1,6 +1,5 @@
-import {expect} from "chai";
 import {Configuration} from "../../src/utils/Configuration";
-import {IDBConfig, IInvokeConfig} from "../../src/models";
+import {IDBConfig} from "../../src/models";
 import {ERRORS} from "../../src/assets/Enums";
 
 describe("ConfigurationUtil", () => {
@@ -8,8 +7,10 @@ describe("ConfigurationUtil", () => {
     context("when calling getConfig", () => {
         it("returns the full config object", () => {
             const conf = Configuration.getInstance().getConfig();
-            expect(conf).to.contain.keys("dynamodb");
-            expect(conf.dynamodb).to.contain.keys("local", "local-global", "remote");
+            expect(conf).toHaveProperty("dynamodb");
+            expect(conf.dynamodb).toHaveProperty("local");
+            expect(conf.dynamodb).toHaveProperty( "local-global");
+            expect(conf.dynamodb).toHaveProperty( "remote");
         });
     });
 
@@ -21,10 +22,9 @@ describe("ConfigurationUtil", () => {
             const emptyConfig: Configuration = new Configuration("../../tests/resources/EmptyConfig.yml");
             it("should throw error", () => {
                 try {
-                    emptyConfig.getDynamoDBConfig();
-                    expect.fail();
+                    expect(emptyConfig.getDynamoDBConfig()).toThrowError();
                 } catch (e) {
-                    expect(e.message).to.equal(ERRORS.DynamoDBConfigNotDefined);
+                    expect(e.message).toEqual(ERRORS.DynamoDBConfigNotDefined);
                 }
             });
         });
@@ -32,8 +32,9 @@ describe("ConfigurationUtil", () => {
             process.env.BRANCH = "local";
             const dbConfig: IDBConfig = Configuration.getInstance().getDynamoDBConfig();
             it("should return the local invoke config", () => {
-                expect(dbConfig).to.contain.keys("params", "table");
-                expect(dbConfig.table).to.equal("cvs-local-preparers");
+                expect(dbConfig).toHaveProperty("params");
+                expect(dbConfig).toHaveProperty("table");
+                expect(dbConfig.table).toEqual("cvs-local-preparers");
             });
         });
 
@@ -41,10 +42,12 @@ describe("ConfigurationUtil", () => {
             process.env.BRANCH = "local-global";
             const dbConfig: IDBConfig = Configuration.getInstance().getDynamoDBConfig();
             it("should return the local invoke config", () => {
-                expect(dbConfig).to.contain.keys("params", "table");
-                expect(dbConfig).to.not.contain.keys("keys");
-                expect(dbConfig.table).to.equal("cvs-local-global-preparers");
-                expect(dbConfig.params).to.contain.keys("region", "endpoint");
+                expect(dbConfig).toHaveProperty("params");
+                expect(dbConfig).toHaveProperty("table");
+                expect(dbConfig).not.toHaveProperty("keys");
+                expect(dbConfig.table).toEqual("cvs-local-global-preparers");
+                expect(dbConfig.params).toHaveProperty("region");
+                expect(dbConfig.params).toHaveProperty("endpoint");
             });
         });
 
@@ -52,10 +55,12 @@ describe("ConfigurationUtil", () => {
             it("should return the remote invoke config", () => {
                 process.env.BRANCH = "develop";
                 // Switch to mockedConfig to simplify environment mocking
-                const dbConfig: IDBConfig = getMockedConfig().getDynamoDBConfig(); expect(dbConfig).to.contain.keys("params", "table");
-                expect(dbConfig).to.not.contain.keys("keys");
-                expect(dbConfig.table).to.equal("cvs-develop-preparers");
-                expect(dbConfig.params).to.deep.equal({});
+                const dbConfig: IDBConfig = getMockedConfig().getDynamoDBConfig();
+                expect(dbConfig).toHaveProperty("params", );
+                expect(dbConfig).toHaveProperty("table");
+                expect(dbConfig).not.toHaveProperty("keys");
+                expect(dbConfig.table).toEqual("cvs-develop-preparers");
+                expect(dbConfig.params).toStrictEqual({});
             });
         });
 
@@ -63,10 +68,9 @@ describe("ConfigurationUtil", () => {
             it("should throw error", () => {
                 process.env.BRANCH = "";
                 try {
-                    getMockedConfig().getDynamoDBConfig();
-                    expect.fail();
+                    expect(getMockedConfig().getDynamoDBConfig()).toThrowError();
                 } catch (e) {
-                    expect(e.message).to.equal(ERRORS.NoBranch);
+                    expect(e.message).toEqual(ERRORS.NoBranch);
                 }
             });
         });
