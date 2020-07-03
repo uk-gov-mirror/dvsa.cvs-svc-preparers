@@ -3,7 +3,7 @@ update_configs:
 - package_manager: "javascript"
   directory: "/"
   update_schedule: "live"
-  target_branch: "devops"
+  target_branch: "develop"
   version_requirement_updates: increase_versions
   allowed_updates:
   - match:
